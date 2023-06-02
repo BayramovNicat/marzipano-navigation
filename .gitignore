@@ -8,6 +8,6 @@ package-lock.json
 /tmp/*
 /build/*
 /dist/*
-# /docs/*
+/docs/*
 /test/test_suite.js*
 .idea
