@@ -17,7 +17,7 @@ let panoListener = () => {
         Arrows.createArrow(i);
         Scene.loadScene(Pano.findPano(i.id));
     });
-    cameraReset();
+    // cameraReset();
 }
 let angleListener = () => {
     let yaw = viewer.scene().view().yaw() * 180 / Math.PI;
@@ -49,16 +49,42 @@ setTimeout(() => {
 
 
 ///////////////////////////////////////////////////////////
+// pano change transition
 
-
-const DISTANCE = 0.3;
+const DISTANCE = 0.2;
 const DURATION = 500;
 let _getPositionByAngle = (angle, radius) => {
     const angleInRadians = (angle * Math.PI) / 180;
     const x = Number((radius * Math.cos(angleInRadians)).toFixed(2));
-    const y = Number((radius * Math.sin(angleInRadians)).toFixed(2));
-    return { x, y };
+    const y = 0;
+    const z = Number((radius * Math.sin(angleInRadians)).toFixed(2));
+    return { x, y, z };
 };
+let _changeViewPoint = (({ tx, ty, tz }) => {
+    let view = Viewer.VIEW;
+    view._resetParams();
+    view._params.tx = tx;
+    view._params.ty = ty;
+    view._params.tz = tz;
+    view._update();
+});
+let _goTo = (duration, { x, y, z }) => {
+    Marzipano.util.tween(
+        duration,
+        tweenVal => {   // func
+            _changeViewPoint({
+                tx: x * tweenVal,
+                ty: y * tweenVal,
+                tz: z * tweenVal
+            });
+        }, () => {      // done
+            _changeViewPoint({
+                tx: 0,
+                ty: 0,
+                tz: 0
+            });
+        });
+}
 
 let cameraForward = (link) => {
     // let arrowAngle = link.angle - Viewer.getAngle() + Viewer.getActivePano().north_angle;
@@ -69,20 +95,25 @@ let cameraForward = (link) => {
     let arrowAngle = link.angle - 90;
     let pos = _getPositionByAngle(arrowAngle, DISTANCE);
     console.log(pos);
-    goto(DURATION, pos.x, 0, pos.y);
+    _goTo(DURATION, pos);
 }
-let cameraReset = () => {
-    setTimeout(() => {
-        goto(0, 0, 0, 0);
-    }, DURATION);
-}
+// let cameraReset = () => {
+//     setTimeout(() => {
+//         goto(0, 0, 0, 0);
+//     }, DURATION);
+// }
 
+
+///////////////////////////////////////////////////////////
+// depthmap transition
+
+///////////////////////////////////////////////////////////
 
 function goto(duration, x, y, z) {
     let view = Viewer.VIEW;
-    var tx = 0;
-    var ty = 0;
-    var tz = 0;
+    var tx = view.tx;
+    var ty = view.ty;
+    var tz = view.tz;
     var dx = x - tx;
     var dy = y - ty;
     var dz = z - tz;
