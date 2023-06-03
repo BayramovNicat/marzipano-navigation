@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><p>This is the reference for <a href="http://www.marzipano.net/">Marzipano</a>. For a Getting Started guide see <a href="http://www.marzipano.net/docs.html">http://www.marzipano.net/docs.html</a>.</p>
+<p>The reference is not yet complete (and also not very pretty). If you have any questions please contact us.</p>
+<h2>HTML requirements</h2>
+<p>The following viewport code should be used to correctly render in CSS 3D Transforms mode:</p>
+<pre class="prettyprint source lang-html"><code>&lt;meta name=&quot;viewport&quot; content=&quot;target-densitydpi=device-dpi, width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui&quot; />
+&lt;style>@-ms-viewport { width: device-width; }&lt;/style>
+</code></pre>
+<p>A tour exported by the <a href="http://www.marzipano.net/tool">Marzipano Tool</a> can be used as a boilerplate for many projects.</p>
+<h3>Interface elements</h3>
+<p>It is usually desirable to prevent the default browser behavior on interface elements, such as disabling element selection.</p>
+<pre class="prettyprint source lang-css"><code>.interface {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  -ms-content-zooming: none;
+}
+</code></pre>
+<h2>Known issues</h2>
+<h3>CSS 3D Transforms on Chrome</h3>
+<p>Chrome (as of version 41) has a bug which causes some tiles to not be displayed in CSS 3D Transforms on some camera directions when other HTML elements exist above the viewer. This can be fixed by setting the opacity of those elements to a value close to 1.</p>
+<pre class="prettyprint source lang-css"><code>.interface {
+  opacity: 0.99;
+}
+</code></pre>
+<h3>Seams on iOS7 after virtual keyboard</h3>
+<p>When using CSS 3D Transforms rendering on iOS7, seams become visible between the tiles when the virtual keyboard is shown (for instance, after selecting an &lt;input&gt; element).</p>
+<h3>Touch events in emulation mode</h3>
+<p>When using Chrome's emulation mode for touch, Hammer.js only listens to the touch events. If emulation mode is then disabled it will no longer be possible to control the viewer using the mouse, since the mouse events are not being listened to.</p>
+<p>Be sure to refresh the page after enabling or disabling emulation mode.</p></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="colorEffects.html">colorEffects</a></li><li><a href="FlatView.limit.html">limit</a></li><li><a href="RectilinearView.limit.html">limit</a></li><li><a href="util.html">util</a></li><li><a href="util.convertFov.html">convertFov</a></li></ul><h3>Classes</h3><ul><li><a href="ControlComposer.html">ControlComposer</a></li><li><a href="ControlCursor.html">ControlCursor</a></li><li><a href="Controls.html">Controls</a></li><li><a href="CubeGeometry.html">CubeGeometry</a></li><li><a href="CubeTile.html">CubeTile</a></li><li><a href="DepthmapStore.html">DepthmapStore</a></li><li><a href="DragControlMethod.html">DragControlMethod</a></li><li><a href="DynamicAsset.html">DynamicAsset</a></li><li><a href="Dynamics.html">Dynamics</a></li><li><a href="ElementPressControlMethod.html">ElementPressControlMethod</a></li><li><a href="EquirectGeometry.html">EquirectGeometry</a></li><li><a href="EquirectTile.html">EquirectTile</a></li><li><a href="FlatGeometry.html">FlatGeometry</a></li><li><a href="FlatTile.html">FlatTile</a></li><li><a href="FlatView.html">FlatView</a></li><li><a href="HammerGestures.html">HammerGestures</a></li><li><a href="Hotspot.html">Hotspot</a></li><li><a href="HotspotContainer.html">HotspotContainer</a></li><li><a href="HtmlImageLoader.html">HtmlImageLoader</a></li><li><a href="ImageUrlSource.html">ImageUrlSource</a></li><li><a href="KeyControlMethod.html">KeyControlMethod</a></li><li><a href="Layer.html">Layer</a></li><li><a href="NetworkError.html">NetworkError</a></li><li><a href="PinchZoomControlMethod.html">PinchZoomControlMethod</a></li><li><a href="QtvrControlMethod.html">QtvrControlMethod</a></li><li><a href="RectilinearView.html">RectilinearView</a></li><li><a href="RendererRegistry.html">RendererRegistry</a></li><li><a href="RenderLoop.html">RenderLoop</a></li><li><a href="Scene.html">Scene</a></li><li><a href="ScrollZoomControlMethod.html">ScrollZoomControlMethod</a></li><li><a href="SingleAssetSource.html">SingleAssetSource</a></li><li><a href="StaticAsset.html">StaticAsset</a></li><li><a href="TextureStore.html">TextureStore</a></li><li><a href="TextureStoreItem.html">TextureStoreItem</a></li><li><a href="TileSearcher.html">TileSearcher</a></li><li><a href="Timer.html">Timer</a></li><li><a href="VelocityControlMethod.html">VelocityControlMethod</a></li><li><a href="Viewer.html">Viewer</a></li><li><a href="WebGlCubeDepthRenderer.html">WebGlCubeDepthRenderer</a></li><li><a href="WebGlCubeRenderer.html">WebGlCubeRenderer</a></li><li><a href="WebGlEquirectRenderer.html">WebGlEquirectRenderer</a></li><li><a href="WebGlFlatRenderer.html">WebGlFlatRenderer</a></li><li><a href="WebGlStage.html">WebGlStage</a></li></ul><h3>Interfaces</h3><ul><li><a href="Asset.html">Asset</a></li><li><a href="ControlMethod.html">ControlMethod</a></li><li><a href="Coords.html">Coords</a></li><li><a href="Effects.html">Effects</a></li><li><a href="FlatViewCoords.html">FlatViewCoords</a></li><li><a href="FlatViewParams.html">FlatViewParams</a></li><li><a href="Geometry.html">Geometry</a></li><li><a href="ImageLoader.html">ImageLoader</a></li><li><a href="Rect.html">Rect</a></li><li><a href="RectilinearViewCoords.html">RectilinearViewCoords</a></li><li><a href="RectilinearViewParams.html">RectilinearViewParams</a></li><li><a href="RectSpec.html">RectSpec</a></li><li><a href="Renderer.html">Renderer</a></li><li><a href="Size.html">Size</a></li><li><a href="Source.html">Source</a></li><li><a href="Stage.html">Stage</a></li><li><a href="Tile.html">Tile</a></li><li><a href="View.html">View</a></li></ul><h3>Events</h3><ul><li><a href="Asset.html#event:change">change</a></li><li><a href="ControlMethod.html#event:active">active</a></li><li><a href="ControlMethod.html#event:inactive">inactive</a></li><li><a href="ControlMethod.html#event:parameterDynamics">parameterDynamics</a></li><li><a href="HotspotContainer.html#event:hotspotsChange">hotspotsChange</a></li><li><a href="Layer.html#event:renderComplete">renderComplete</a></li><li><a href="RenderLoop.html#event:afterRender">afterRender</a></li><li><a href="RenderLoop.html#event:beforeRender">beforeRender</a></li><li><a href="Scene.html#event:layerChange">layerChange</a></li><li><a href="Scene.html#event:viewChange">viewChange</a></li><li><a href="Source.html#event:networkError">networkError</a></li><li><a href="Stage.html#event:renderComplete">renderComplete</a></li><li><a href="Stage.html#event:renderInvalid">renderInvalid</a></li><li><a href="TextureStore.html#event:textureCancel">textureCancel</a></li><li><a href="TextureStore.html#event:textureError">textureError</a></li><li><a href="TextureStore.html#event:textureInvalid">textureInvalid</a></li><li><a href="TextureStore.html#event:textureLoad">textureLoad</a></li><li><a href="TextureStore.html#event:textureStartLoad">textureStartLoad</a></li><li><a href="TextureStore.html#event:textureUnload">textureUnload</a></li><li><a href="Timer.html#event:timeout">timeout</a></li><li><a href="View.html#event:change">change</a></li><li><a href="View.html#event:resize">resize</a></li><li><a href="Viewer.html#event:sceneChange">sceneChange</a></li><li><a href="Viewer.html#event:viewChange">viewChange</a></li><li><a href="WebGlStage.html#event:renderComplete">renderComplete</a></li><li><a href="WebGlStage.html#event:renderInvalid">renderInvalid</a></li></ul><h3>Global</h3><ul><li><a href="global.html#autorotate">autorotate</a></li><li><a href="global.html#calcRect">calcRect</a></li><li><a href="global.html#registerDefaultControls">registerDefaultControls</a></li><li><a href="global.html#registerDefaultRenderers">registerDefaultRenderers</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Fri Jun 02 2023 19:46:45 GMT+0400 (Азербайджан, стандартное время)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

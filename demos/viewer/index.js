@@ -31,7 +31,7 @@ setTimeout(() => {
 
 let goToPano = (panoId) => {
     Viewer.setActivePano(Pano.findPano(panoId));
-    Scene.loadScene(Viewer.getActivePano()).switchTo();
+    Scene.loadScene(Viewer.getActivePano()).switchTo({ transitionDuration: DURATION });
 }
 
 Arrows.setArrowClick((link) => {
@@ -51,45 +51,32 @@ setTimeout(() => {
 ///////////////////////////////////////////////////////////
 
 
-const DISTANCE = 0.2;
-let cameraForward = (link) => {
-    // console.log(delta.x, delta.z);
-    let arrowAngle = link.angle - Viewer.getAngle() + Viewer.getActivePano().north_angle - 90 + Viewer.getViewer().view().yaw() * 180 / Math.PI;
-    // console.log(Viewer.getViewer().view().yaw() * 180 / Math.PI);
-    console.log(arrowAngle);
-    deltaByAngle(arrowAngle, DISTANCE);
-    goto(500, delta.x, delta.y, delta.z);
-}
-
-let cameraReset = () => {
-    setTimeout(() => {
-        goto(0, 0, 0, 0);
-        delta = {
-            x: 0,
-            y: 0,
-            z: 0
-        }
-    }, 501);
-}
-
-
-let delta = {
-    x: 0,
-    y: 0,
-    z: 0
-}
-
-const deltaByAngle = (angle, radius) => {
+const DISTANCE = 0.3;
+const DURATION = 500;
+let _getPositionByAngle = (angle, radius) => {
     const angleInRadians = (angle * Math.PI) / 180;
     const x = Number((radius * Math.cos(angleInRadians)).toFixed(2));
     const y = Number((radius * Math.sin(angleInRadians)).toFixed(2));
-
-    delta = {
-        x: x,
-        y: 0,
-        z: y
-    }
+    return { x, y };
 };
+
+let cameraForward = (link) => {
+    // let arrowAngle = link.angle - Viewer.getAngle() + Viewer.getActivePano().north_angle;
+    // let arrowAngle = link.angle - Viewer.getAngle() + Viewer.getActivePano().north_angle - 90;
+    // let arrowAngle = link.angle - Viewer.getAngle() + Viewer.getActivePano().north_angle - 90 + Viewer.getViewer().view().yaw() * 180 / Math.PI;
+    // let arrowAngle = link.angle - (Viewer.getViewer().view().yaw() * 180 / Math.PI + Viewer.getActivePano().north_angle) + Viewer.getActivePano().north_angle - 90 + Viewer.getViewer().view().yaw() * 180 / Math.PI;
+    // let arrowAngle = link.angle - Viewer.getActivePano().north_angle;
+    let arrowAngle = link.angle - 90;
+    let pos = _getPositionByAngle(arrowAngle, DISTANCE);
+    console.log(pos);
+    goto(DURATION, pos.x, 0, pos.y);
+}
+let cameraReset = () => {
+    setTimeout(() => {
+        goto(0, 0, 0, 0);
+    }, DURATION);
+}
+
 
 function goto(duration, x, y, z) {
     let view = Viewer.VIEW;
