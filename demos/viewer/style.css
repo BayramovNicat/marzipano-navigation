@@ -49,3 +49,14 @@ svg g path.placeholder {
 svg g:hover path.arrow {
     fill: #CCFFFF;
 }
+
+.options {
+    background-color: #2f2f2f;
+    position: absolute;
+    color: #fff;
+    flex-direction: column;
+    display: flex;
+    top: 0;
+    left: 0;
+    padding: 5px;
+}

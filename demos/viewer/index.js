@@ -8,6 +8,9 @@ import Arrows from './arrows.js';
 Viewer.setViewer(document.querySelector('#pano'));
 let viewer = Viewer.getViewer();
 
+// Options
+let distanceInput = document.querySelector('#distance');
+let durationInput = document.querySelector('#duration');
 
 
 // Listeners
@@ -39,7 +42,7 @@ setTimeout(() => {
 
 let goToPano = (panoId) => {
     Viewer.setActivePano(Pano.findPano(panoId));
-    Scene.loadScene(Viewer.getActivePano()).switchTo({ transitionDuration: DURATION });
+    Scene.loadScene(Viewer.getActivePano()).switchTo({ transitionDuration: Number(durationInput.value) });
 }
 
 Arrows.setArrowClick((link) => {
@@ -58,8 +61,6 @@ setTimeout(() => {
 ///////////////////////////////////////////////////////////
 // pano change transition
 
-const DISTANCE = 0.2;
-const DURATION = 500;
 let _getPositionByAngle = (angle, radius) => {
     const angleInRadians = (angle * Math.PI) / 180;
     const x = Number((radius * Math.cos(angleInRadians)).toFixed(2));
@@ -140,15 +141,15 @@ let cameraForward = (link) => {
     // let arrowAngle = link.angle - (Viewer.getViewer().view().yaw() * 180 / Math.PI + Viewer.getActivePano().north_angle) + Viewer.getActivePano().north_angle - 90 + Viewer.getViewer().view().yaw() * 180 / Math.PI;
     // let arrowAngle = link.angle - Viewer.getActivePano().north_angle;
     let arrowAngle = link.angle - 90;
-    let pos = _getPositionByAngle(arrowAngle, DISTANCE);
+    let pos = _getPositionByAngle(arrowAngle, Number(distanceInput.value) / 10);
 
     // console.log(pos);
 
     // console.log(Viewer.getOldActivePanoId(), Viewer.getActivePano().id);
     let viewOld = Scene.getSceneById(Viewer.getOldActivePanoId())?.scene.view();
-    _goTo(viewOld, DURATION, pos);
+    _goTo(viewOld, Number(durationInput.value), pos);
     let viewCurrent = Scene.getSceneById(Viewer.getActivePano().id).scene.view();
-    _goTo(viewCurrent, DURATION, pos, true);
+    _goTo(viewCurrent, Number(durationInput.value), pos, true);
 
     // old
     // let sceneOld = Scene.getSceneById(Viewer.getOldActivePanoId());
