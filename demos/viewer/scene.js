@@ -92,12 +92,14 @@ let source = (pano) => {
 }
 
 let loadScene = (pano) => {
+    const view = new Marzipano.RectilinearView(null,
+        Marzipano.RectilinearView.limit.traditional(8192, 120 * Math.PI / 180));
     let scene = scenes.find(i => i.id == pano.id)?.scene;
     if (!scene) {
         scene = Viewer.getViewer().createScene({
             source: source(pano),
             geometry: Viewer.GEOMETRY,
-            view: Viewer.VIEW,
+            view: view,
             pinFirstLevel: true
         });
         scenes.push({
@@ -108,6 +110,11 @@ let loadScene = (pano) => {
     return scene;
 }
 
+let getSceneById = (panoId) => {
+    return scenes.find(i => i.id == panoId);
+}
+
 export default {
-    loadScene
+    loadScene,
+    getSceneById
 };

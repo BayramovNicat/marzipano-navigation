@@ -1,8 +1,5 @@
 const RES_16K = true;
 
-const VIEW = new Marzipano.RectilinearView(null,
-    Marzipano.RectilinearView.limit.traditional(8192, 120 * Math.PI / 180));
-
 const GEOMETRY = new Marzipano.CubeGeometry([
     { tileSize: 256, size: 256, fallbackOnly: true },
     { tileSize: 512, size: 512 },
@@ -33,11 +30,16 @@ let getAngle = () => {
 }
 
 let _activePano;
+let _oldActivePanoId;
 let setActivePano = (pano) => {
+    _oldActivePanoId = _activePano?.id;
     _activePano = pano;
 }
 let getActivePano = () => {
     return _activePano;
+}
+let getOldActivePanoId = () => {
+    return _oldActivePanoId;
 }
 
 
@@ -46,11 +48,11 @@ let getActivePano = () => {
 export default {
     RES_16K,
     GEOMETRY,
-    VIEW,
     setViewer,
     getViewer,
     setAngle,
     getAngle,
     setActivePano,
-    getActivePano
+    getActivePano,
+    getOldActivePanoId
 };
