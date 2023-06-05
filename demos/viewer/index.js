@@ -56,8 +56,10 @@ setTimeout(() => {
     goToPano(Pano.panoramas[0].id);
 }, 10);
 
-document.querySelector('.hotspot').addEventListener('click', (e) => {
-    goToPano(Number(e.target.dataset.id));
+document.querySelectorAll('.hotspot').forEach(elm => {
+    elm.addEventListener('click', (e) => {
+        goToPano(Number(e.target.dataset.id));
+    });
 });
 
 

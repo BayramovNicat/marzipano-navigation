@@ -65,4 +65,8 @@ svg g:hover path.arrow {
     position: absolute;
     top: 0;
     right: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 5px;
 }
