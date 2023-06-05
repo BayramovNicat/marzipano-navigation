@@ -39,17 +39,17 @@ setTimeout(() => {
 });
 
 let goToPano = (panoId) => {
+    const oldPano = Viewer.getActivePano();
     Viewer.setActivePano(Pano.findPano(panoId));
-    // console.log(Viewer.getActivePano());
-    Scene.loadScene(Viewer.getActivePano()).switchTo({ transitionDuration: Number(durationInput.value) });
-    console.log(panoId);
+    const currentPano = Viewer.getActivePano();
+
+    Scene.loadScene(currentPano).switchTo({ transitionDuration: Number(durationInput.value) });
+    moveCameraForward(oldPano, currentPano);
 }
 
 Arrows.setArrowClick((link) => {
     goToPano(link.id);
-    // Viewer.setActivePano(Pano.findPano(link.id));
-    moveCameraForward(link);
-})
+});
 
 // init first pano
 setTimeout(() => {
@@ -106,18 +106,29 @@ const getPositionFromAngle = (angle, radius) => {
     return { x, y: 0, z };
 };
 
-const moveCameraForward = (link) => {
+const getAngleBetweenPoints = (point1, point2) => {
+    const dx = point2.lat - point1.lat;
+    const dy = point2.lng - point1.lng;
+    const angleInRadians = Math.atan2(dy, dx);
+    const angleInDegrees = angleInRadians * (180 / Math.PI);
+    return angleInDegrees;
+};
+
+const moveCameraForward = (oldPano, currentPano) => {
+    if (!oldPano || !currentPano || oldPano.id == currentPano.id) return;
+    const angle = getAngleBetweenPoints(oldPano.latlong, currentPano.latlong) - oldPano.north_angle - 90;
+    const position = getPositionFromAngle(angle, Number(distanceInput.value) / 10);
+    const duration = Number(durationInput.value);
+
+    const oldView = Scene.getSceneById(oldPano.id).scene.view();
+    animateViewPosition(oldView, position, duration);
+    const currentView = Scene.getSceneById(currentPano.id).scene.view();
+    animateViewPosition(currentView, position, duration, true);
+
     // let arrowAngle = link.angle - Viewer.getAngle() + Viewer.getActivePano().north_angle;
     // let arrowAngle = link.angle - Viewer.getAngle() + Viewer.getActivePano().north_angle - 90;
     // let arrowAngle = link.angle - Viewer.getAngle() + Viewer.getActivePano().north_angle - 90 + Viewer.getViewer().view().yaw() * 180 / Math.PI;
     // let arrowAngle = link.angle - (Viewer.getViewer().view().yaw() * 180 / Math.PI + Viewer.getActivePano().north_angle) + Viewer.getActivePano().north_angle - 90 + Viewer.getViewer().view().yaw() * 180 / Math.PI;
     // let arrowAngle = link.angle - Viewer.getActivePano().north_angle;
-    const arrowAngle = link.angle - 90;
-    const position = getPositionFromAngle(arrowAngle, Number(distanceInput.value) / 10);
-    const duration = Number(durationInput.value);
-
-    const oldView = Scene.getSceneById(Viewer.getOldActivePanoId()).scene.view();
-    animateViewPosition(oldView, position, duration);
-    const currentView = Scene.getSceneById(Viewer.getActivePano().id).scene.view();
-    animateViewPosition(currentView, position, duration, true);
+    // const arrowAngle = link.angle - 90;
 };
