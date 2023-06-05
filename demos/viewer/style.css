@@ -60,3 +60,9 @@ svg g:hover path.arrow {
     left: 0;
     padding: 5px;
 }
+
+.buttons {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
