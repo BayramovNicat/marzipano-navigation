@@ -11,6 +11,7 @@ let viewer = Viewer.getViewer();
 // Options
 let distanceInput = document.querySelector('#distance');
 let durationInput = document.querySelector('#duration');
+let durationFadeInput = document.querySelector('#duration-fade');
 
 
 // Listeners
@@ -43,7 +44,7 @@ let goToPano = (panoId) => {
     Viewer.setActivePano(Pano.findPano(panoId));
     const currentPano = Viewer.getActivePano();
 
-    Scene.loadScene(currentPano).switchTo({ transitionDuration: Number(durationInput.value) });
+    Scene.loadScene(currentPano).switchTo({ transitionDuration: Number(durationFadeInput.value) });
     moveCameraForward(oldPano, currentPano);
 }
 
@@ -120,11 +121,19 @@ const getAngleBetweenPoints = (point1, point2) => {
     return angleInDegrees;
 };
 
+const getDistanceBetweenPoints = (point1, point2) => {
+    const dx = point2.lat - point1.lat;
+    const dy = point2.lng - point1.lng;
+    return Math.sqrt(dx * dx + dy * dy);
+};
+
 const moveCameraForward = (oldPano, currentPano) => {
     if (!oldPano || !currentPano || oldPano.id == currentPano.id) return;
     const angle = getAngleBetweenPoints(oldPano.latlong, currentPano.latlong) - oldPano.north_angle - 90;
     const position = getPositionFromAngle(angle, Number(distanceInput.value) / 10);
     const duration = Number(durationInput.value);
+
+    console.log(getDistanceBetweenPoints(oldPano.latlong, currentPano.latlong) * 10000 * 6);
 
     const oldView = Scene.getSceneById(oldPano.id).scene.view();
     animateViewPosition(oldView, position, duration);
