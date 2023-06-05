@@ -86,13 +86,17 @@ const animateViewPosition = (view, { x, y, z }, duration, reverse = false) => {
 
     changeViewPosition(view, startPosition);
 
+    const tx = view.tx(), ty = view.ty(), tz = view.tz();
+    const delta = Object.fromEntries(
+        Object.entries(endPosition).map(([key, val]) => [key, val - view[key]()])
+    );
     Marzipano.util.tween(
         duration,
         tweenValue => {
             changeViewPosition(view, {
-                tx: view.tx() * (1 - tweenValue) + endPosition.tx * tweenValue,
-                ty: view.ty() * (1 - tweenValue) + endPosition.ty * tweenValue,
-                tz: view.tz() * (1 - tweenValue) + endPosition.tz * tweenValue
+                tx: tx + delta.tx * tweenValue,
+                ty: ty + delta.ty * tweenValue,
+                tz: tz + delta.tz * tweenValue
             });
         },
         () => {
