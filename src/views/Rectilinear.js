@@ -793,28 +793,34 @@ RectilinearView.prototype._updateMatrix = function() {
       mat4.perspective(projMatrix, vfov, aspect, -1, 1);
     }
 
+    // mat4.invert(invProjMatrix, projMatrix);
+
+    // // View Matrix.
+    // mat4.identity(viewMatrix);
+    // mat4.translate(viewMatrix, viewMatrix, vec3.negate(vec3.create(), [this._ox, this._oy, this._oz]));
+
+    // // Invert control.
+    // var roll = this._invertControl ? -this._roll : this._roll;
+    // var pitch = this._invertControl ? -this._pitch :this._pitch;
+    // var yaw = this._invertControl ? -this._yaw : this._yaw;
+    // mat4.rotateZ(viewMatrix, viewMatrix, roll);
+    // mat4.rotateX(viewMatrix, viewMatrix, pitch);
+    // mat4.rotateY(viewMatrix, viewMatrix, yaw);
+
+    // mat4.translate(viewMatrix, viewMatrix, vec3.negate(vec3.create(), [this._tx, this._ty, this._tz]));
+
+    // mat4.invert(invViewMatrix, viewMatrix);
+
+    // // Get the frustum planes.
+    // var matrix = mat4.create();
+    // mat4.multiply(matrix, projMatrix, viewMatrix);
+    // this._matrixToFrustum(matrix, frustum);
+
+    mat4.rotateZ(projMatrix, projMatrix, this._roll);
+    mat4.rotateX(projMatrix, projMatrix, this._pitch);
+    mat4.rotateY(projMatrix, projMatrix, this._yaw);
     mat4.invert(invProjMatrix, projMatrix);
-
-    // View Matrix.
-    mat4.identity(viewMatrix);
-    mat4.translate(viewMatrix, viewMatrix, vec3.negate(vec3.create(), [this._ox, this._oy, this._oz]));
-
-    // Invert control.
-    var roll = this._invertControl ? -this._roll : this._roll;
-    var pitch = this._invertControl ? -this._pitch :this._pitch;
-    var yaw = this._invertControl ? -this._yaw : this._yaw;
-    mat4.rotateZ(viewMatrix, viewMatrix, roll);
-    mat4.rotateX(viewMatrix, viewMatrix, pitch);
-    mat4.rotateY(viewMatrix, viewMatrix, yaw);
-
-    mat4.translate(viewMatrix, viewMatrix, vec3.negate(vec3.create(), [this._tx, this._ty, this._tz]));
-
-    mat4.invert(invViewMatrix, viewMatrix);
-
-    // Get the frustum planes.
-    var matrix = mat4.create();
-    mat4.multiply(matrix, projMatrix, viewMatrix);
-    this._matrixToFrustum(matrix, frustum);
+    this._matrixToFrustum(projMatrix, frustum);
 
     this._matrixChanged = false;
   }
