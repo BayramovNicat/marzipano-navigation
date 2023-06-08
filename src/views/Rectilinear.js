@@ -819,6 +819,7 @@ RectilinearView.prototype._updateMatrix = function() {
     mat4.rotateZ(projMatrix, projMatrix, this._roll);
     mat4.rotateX(projMatrix, projMatrix, this._pitch);
     mat4.rotateY(projMatrix, projMatrix, this._yaw);
+    mat4.translate(projMatrix, projMatrix, vec3.negate(vec3.create(), [this._tx, this._ty, this._tz]));
     mat4.invert(invProjMatrix, projMatrix);
     this._matrixToFrustum(projMatrix, frustum);
 
