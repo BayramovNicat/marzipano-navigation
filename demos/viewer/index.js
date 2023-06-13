@@ -43,8 +43,10 @@ let goToPano = (panoId) => {
     const oldPano = Viewer.getActivePano();
     Viewer.setActivePano(Pano.findPano(panoId));
     const currentPano = Viewer.getActivePano();
+    const duration = Number(durationFadeInput.value);
 
-    Scene.loadScene(currentPano).switchTo({ transitionDuration: Number(durationFadeInput.value) });
+    Scene.loadScene(currentPano).switchTo({ transitionDuration: duration, transitionUpdate: () => { } });
+    blurEffect(duration);
     moveCameraForward(oldPano, currentPano);
 }
 
@@ -127,27 +129,6 @@ const getDistanceBetweenPoints = (point1, point2) => {
     return Math.sqrt(dx * dx + dy * dy);
 };
 
-// const moveCameraForward = (oldPano, currentPano) => {
-//     if (!oldPano || !currentPano || oldPano.id == currentPano.id) return;
-//     const angle = getAngleBetweenPoints(oldPano.latlong, currentPano.latlong) - oldPano.north_angle - 90;
-//     const position = getPositionFromAngle(angle, Number(distanceInput.value) / 10);
-//     const duration = Number(durationInput.value);
-
-//     console.log(getDistanceBetweenPoints(oldPano.latlong, currentPano.latlong) * 10000 * 6);
-
-//     const oldView = Scene.getSceneById(oldPano.id).scene.view();
-//     animateViewPosition(oldView, position, duration);
-//     const currentView = Scene.getSceneById(currentPano.id).scene.view();
-//     animateViewPosition(currentView, position, duration, true);
-
-//     // let arrowAngle = link.angle - Viewer.getAngle() + Viewer.getActivePano().north_angle;
-//     // let arrowAngle = link.angle - Viewer.getAngle() + Viewer.getActivePano().north_angle - 90;
-//     // let arrowAngle = link.angle - Viewer.getAngle() + Viewer.getActivePano().north_angle - 90 + Viewer.getViewer().view().yaw() * 180 / Math.PI;
-//     // let arrowAngle = link.angle - (Viewer.getViewer().view().yaw() * 180 / Math.PI + Viewer.getActivePano().north_angle) + Viewer.getActivePano().north_angle - 90 + Viewer.getViewer().view().yaw() * 180 / Math.PI;
-//     // let arrowAngle = link.angle - Viewer.getActivePano().north_angle;
-//     // const arrowAngle = link.angle - 90;
-// };
-
 const moveCameraForward = (panoOld, panoCurrent) => {
     if (!panoOld || !panoCurrent || panoOld.id == panoCurrent.id) return;
     const distance = Number(distanceInput.value);
@@ -163,3 +144,35 @@ const moveCameraForward = (panoOld, panoCurrent) => {
     animateViewPosition(viewOld, positionOld, duration);
     animateViewPosition(viewCurrent, positionCurrent, duration, true);
 };
+
+const blurEffect = (duration) => {
+    const blurDepth = document.getElementById('blur-depth').value;
+    const blur = 5 * blurDepth;
+    requestAnimation(duration / 2, (prog) => {
+        let b = prog * blur / 100;
+        Viewer.getViewer()._controlContainer.style.backdropFilter = `blur(${b}px)`;
+    });
+    setTimeout(() => {
+        requestAnimation(duration / 2, (prog) => {
+            let b = prog * blur / 100;
+            Viewer.getViewer()._controlContainer.style.backdropFilter = `blur(${blur - b}px)`;
+        });
+    }, duration / 2);
+    console.log(Viewer.getViewer()._controlContainer.style.backdropFilter);
+}
+
+
+const requestAnimation = (duration, func) => {
+    let startTime = null;
+    const animate = (timestamp) => {
+        if (!startTime)
+            startTime = timestamp;
+        const elapsedTime = Math.min(duration, timestamp - startTime);
+        func(elapsedTime / duration * 100);
+        if (elapsedTime < duration)
+            requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+}
+
+
