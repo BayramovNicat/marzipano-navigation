@@ -147,7 +147,7 @@ const moveCameraForward = (panoOld, panoCurrent) => {
 
 const blurEffect = (duration) => {
     const blurDepth = document.getElementById('blur-depth').value;
-    const blur = 5 * blurDepth;
+    const blur = 1 * blurDepth;
     requestAnimation(duration / 2, (prog) => {
         let b = prog * blur / 100;
         Viewer.getViewer()._controlContainer.style.backdropFilter = `blur(${b}px)`;
