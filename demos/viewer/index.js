@@ -45,7 +45,7 @@ let goToPano = (panoId) => {
     const currentPano = Viewer.getActivePano();
     const duration = Number(durationFadeInput.value);
 
-    Scene.loadScene(currentPano).switchTo({ transitionDuration: duration, transitionUpdate: () => { } });
+    Scene.loadScene(currentPano).switchTo({ transitionDuration: duration });
     blurEffect(duration);
     moveCameraForward(oldPano, currentPano);
 }
