@@ -145,34 +145,45 @@ const moveCameraForward = (panoOld, panoCurrent) => {
     animateViewPosition(viewCurrent, positionCurrent, duration, true);
 };
 
+let cancelBlurAnimation;
 const blurEffect = (duration) => {
     const blurDepth = document.getElementById('blur-depth').value;
     const blur = 1 * blurDepth;
-    requestAnimation(duration / 2, (prog) => {
+    cancelBlurAnimation && cancelBlurAnimation();
+    cancelBlurAnimation = requestAnimation(duration / 2, (prog) => {
         let b = prog * blur / 100;
         Viewer.getViewer()._controlContainer.style.backdropFilter = `blur(${b}px)`;
     });
     setTimeout(() => {
-        requestAnimation(duration / 2, (prog) => {
+        cancelBlurAnimation && cancelBlurAnimation();
+        cancelBlurAnimation = requestAnimation(duration / 2, (prog) => {
             let b = prog * blur / 100;
             Viewer.getViewer()._controlContainer.style.backdropFilter = `blur(${blur - b}px)`;
         });
     }, duration / 2);
-    console.log(Viewer.getViewer()._controlContainer.style.backdropFilter);
 }
-
-
 const requestAnimation = (duration, func) => {
     let startTime = null;
+    let canceled = false;
+    let cancelLastAnimation = null;
+
     const animate = (timestamp) => {
         if (!startTime)
             startTime = timestamp;
+
         const elapsedTime = Math.min(duration, timestamp - startTime);
         func(elapsedTime / duration * 100);
-        if (elapsedTime < duration)
+
+        if (!canceled && elapsedTime < duration)
             requestAnimationFrame(animate);
-    }
+    };
+
+    cancelLastAnimation && cancelLastAnimation(); // Cancel previous animation if exist
+    cancelLastAnimation = () => {
+        canceled = true;
+    };
     requestAnimationFrame(animate);
-}
+    return cancelLastAnimation;
+};
 
 
