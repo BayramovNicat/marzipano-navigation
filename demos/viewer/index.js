@@ -145,16 +145,22 @@ const moveCameraForward = (panoOld, panoCurrent) => {
     animateViewPosition(viewCurrent, positionCurrent, duration, true);
 };
 
+
+///////////////////////////////////////////////////////////
+// pano change blur
 let cancelBlurAnimation;
+let blurRevereseTimeout;
 const blurEffect = (duration) => {
     const blurDepth = document.getElementById('blur-depth').value;
     const blur = 1 * blurDepth;
     cancelBlurAnimation && cancelBlurAnimation();
     cancelBlurAnimation = requestAnimation(duration / 2, (prog) => {
-        let b = prog * blur / 100;
+        let currentBlur = Viewer.getViewer()._controlContainer.style.backdropFilter;
+        let b = Math.max(parseFloat(currentBlur.match(/[-+]?[0-9]*\.?[0-9]+/)), prog * blur / 100);
         Viewer.getViewer()._controlContainer.style.backdropFilter = `blur(${b}px)`;
     });
-    setTimeout(() => {
+    clearTimeout(blurRevereseTimeout);
+    blurRevereseTimeout = setTimeout(() => {
         cancelBlurAnimation && cancelBlurAnimation();
         cancelBlurAnimation = requestAnimation(duration / 2, (prog) => {
             let b = prog * blur / 100;
