@@ -26,7 +26,7 @@ var once = require('../util/once');
 // Whether to use createImageBitmap instead of a canvas for cropping.
 // See https://caniuse.com/?search=createimagebitmap
 // var useCreateImageBitmap = !!global.createImageBitmap && !browser.firefox && !browser.safari;
-var useCreateImageBitmap = !!global.createImageBitmap;
+var useCreateImageBitmap = false;
 
 // Options for createImageBitmap.
 var createImageBitmapOpts = {
@@ -55,7 +55,7 @@ function HtmlImageLoader(stage) {
  * @param {function(?Error, Asset)} done The callback.
  * @return {function()} A function to cancel loading.
  */
-HtmlImageLoader.prototype.loadImage = function(url, rect, done) {
+HtmlImageLoader.prototype.loadImage = function (url, rect, done) {
   var self = this;
 
   var img = new Image();
@@ -79,11 +79,11 @@ HtmlImageLoader.prototype.loadImage = function(url, rect, done) {
 
   done = once(done);
 
-  img.onload = function() {
+  img.onload = function () {
     self._handleLoad(img, x, y, width, height, done);
   };
 
-  img.onerror = function() {
+  img.onerror = function () {
     self._handleError(url, done);
   };
 
@@ -98,7 +98,7 @@ HtmlImageLoader.prototype.loadImage = function(url, rect, done) {
   return cancel;
 };
 
-HtmlImageLoader.prototype._handleLoad = function(img, x, y, width, height, done) {
+HtmlImageLoader.prototype._handleLoad = function (img, x, y, width, height, done) {
   if (x === 0 && y === 0 && width === 1 && height === 1) {
     // Fast path for when cropping is not needed.
     done(null, new StaticAsset(img));
@@ -115,7 +115,7 @@ HtmlImageLoader.prototype._handleLoad = function(img, x, y, width, height, done)
     // work to another thread and avoid blocking the user interface.
     // Assume that the promise is never rejected.
     global.createImageBitmap(img, x, y, width, height, createImageBitmapOpts)
-      .then(function(bitmap) {
+      .then(function (bitmap) {
         done(null, new StaticAsset(bitmap));
       });
   } else {
@@ -130,7 +130,7 @@ HtmlImageLoader.prototype._handleLoad = function(img, x, y, width, height, done)
   }
 };
 
-HtmlImageLoader.prototype._handleError = function(url, done) {
+HtmlImageLoader.prototype._handleError = function (url, done) {
   // TODO: is there any way to distinguish a network error from other
   // kinds of errors? For now we always return NetworkError since this
   // prevents images to be retried continuously while we are offline.
