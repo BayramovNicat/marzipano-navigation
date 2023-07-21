@@ -25,8 +25,8 @@ var once = require('../util/once');
 
 // Whether to use createImageBitmap instead of a canvas for cropping.
 // See https://caniuse.com/?search=createimagebitmap
-// var useCreateImageBitmap = !!global.createImageBitmap && !browser.firefox && !browser.safari;
-var useCreateImageBitmap = false;
+var useCreateImageBitmap = !!global.createImageBitmap && !browser.firefox && !browser.safari;
+// var useCreateImageBitmap = false;
 
 // Options for createImageBitmap.
 var createImageBitmapOpts = {
