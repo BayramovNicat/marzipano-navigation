@@ -29,7 +29,7 @@ var useCreateImageBitmap =
   !!global.createImageBitmap &&
   !browser.firefox &&
   !browser.safari &&
-  !/iPhone|iPad|iPod|Safari/.test(navigator.userAgent);
+  !/iPhone|iPad|iPod/.test(navigator.userAgent);
 // var useCreateImageBitmap =
 //   !!global.createImageBitmap &&
 //   !browser.firefox &&
