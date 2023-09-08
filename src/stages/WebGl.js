@@ -51,6 +51,11 @@ function initWebGlContext(canvas, opts) {
     throw new Error('Could not get WebGL context');
   }
 
+  // Enable back-face culling
+  gl.enable(gl.CULL_FACE);
+  gl.frontFace(gl.CW);
+  gl.cullFace(gl.FRONT); // Discard front-facing triangles
+
   if (opts.wrapContext) {
     gl = opts.wrapContext(gl);
   }
@@ -110,7 +115,7 @@ function WebGlStage(opts) {
 
   this._gl = initWebGlContext(this._domElement, opts);
 
-  this._handleContextLoss = function() {
+  this._handleContextLoss = function () {
     self.emit('webglcontextlost');
     self._gl = null;
   };
@@ -134,7 +139,7 @@ inherits(WebGlStage, Stage);
 /**
  * Destructor.
  */
-WebGlStage.prototype.destroy = function() {
+WebGlStage.prototype.destroy = function () {
   this._domElement.removeEventListener('webglcontextlost', this._handleContextLoss);
   // Delegate clearing own properties to the Stage destructor.
   this.constructor.super_.prototype.destroy.call(this);
@@ -146,7 +151,7 @@ WebGlStage.prototype.destroy = function() {
  *
  * @return {Element}
  */
-WebGlStage.prototype.domElement = function() {
+WebGlStage.prototype.domElement = function () {
   return this._domElement;
 };
 
@@ -156,12 +161,12 @@ WebGlStage.prototype.domElement = function() {
  *
  * @return {WebGLRenderingContext }
  */
-WebGlStage.prototype.webGlContext = function() {
+WebGlStage.prototype.webGlContext = function () {
   return this._gl;
 };
 
 
-WebGlStage.prototype.setSizeForType = function() {
+WebGlStage.prototype.setSizeForType = function () {
   // Update the size of the canvas coordinate space.
   //
   // The size is obtained by taking the stage dimensions, which are set in CSS
@@ -177,17 +182,17 @@ WebGlStage.prototype.setSizeForType = function() {
 };
 
 
-WebGlStage.prototype.loadImage = function(url, rect, done) {
+WebGlStage.prototype.loadImage = function (url, rect, done) {
   return this._loader.loadImage(url, rect, done);
 };
 
 
-WebGlStage.prototype.maxTextureSize = function() {
+WebGlStage.prototype.maxTextureSize = function () {
   return this._gl.getParameter(this._gl.MAX_TEXTURE_SIZE);
 };
 
 
-WebGlStage.prototype.validateLayer = function(layer) {
+WebGlStage.prototype.validateLayer = function (layer) {
   var tileSize = layer.geometry().maxTileSize();
   var maxTextureSize = this.maxTextureSize();
   if (tileSize > maxTextureSize) {
@@ -196,7 +201,7 @@ WebGlStage.prototype.validateLayer = function(layer) {
 };
 
 
-WebGlStage.prototype.createRenderer = function(Renderer) {
+WebGlStage.prototype.createRenderer = function (Renderer) {
   var rendererInstances = this._rendererInstances;
   for (var i = 0; i < rendererInstances.length; i++) {
     if (rendererInstances[i] instanceof Renderer) {
@@ -212,7 +217,7 @@ WebGlStage.prototype.createRenderer = function(Renderer) {
 };
 
 
-WebGlStage.prototype.destroyRenderer = function(renderer) {
+WebGlStage.prototype.destroyRenderer = function (renderer) {
   var rendererInstances = this._rendererInstances;
   if (this._renderers.indexOf(renderer) < 0) {
     renderer.destroy();
@@ -224,7 +229,7 @@ WebGlStage.prototype.destroyRenderer = function(renderer) {
 };
 
 
-WebGlStage.prototype.startFrame = function() {
+WebGlStage.prototype.startFrame = function () {
 
   var gl = this._gl;
 
@@ -250,10 +255,10 @@ WebGlStage.prototype.startFrame = function() {
 };
 
 
-WebGlStage.prototype.endFrame = function() {};
+WebGlStage.prototype.endFrame = function () { };
 
 
-WebGlStage.prototype.takeSnapshot = function(options) {
+WebGlStage.prototype.takeSnapshot = function (options) {
 
   // Validate passed argument
   if (typeof options !== 'object' || options == null) {
@@ -294,7 +299,7 @@ function WebGlTexture(stage, tile, asset) {
 }
 
 
-WebGlTexture.prototype.refresh = function(tile, asset) {
+WebGlTexture.prototype.refresh = function (tile, asset) {
 
   var gl = this._gl;
   var stage = this._stage;
@@ -388,7 +393,7 @@ WebGlTexture.prototype.refresh = function(tile, asset) {
 };
 
 
-WebGlTexture.prototype.destroy = function() {
+WebGlTexture.prototype.destroy = function () {
   if (this._texture) {
     this._gl.deleteTexture(this._texture);
   }
