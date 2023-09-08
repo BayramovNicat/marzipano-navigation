@@ -16,12 +16,12 @@ module.exports = [
 
   `
   void main(void) {
-    if (!gl_FrontFacing) {
-      discard; // Discard the front-facing triangles
-    } else {
+    //if (!gl_FrontFacing) {
+    //  discard; // Discard the front-facing triangles
+    //} else {
       vec4 color = texture2D(uSampler, vTextureCoord) * uColorMatrix + uColorOffset;
       gl_FragColor = vec4(color.rgba * uOpacity);
-    }
+    //}
   }
   `
 ].join('\n');

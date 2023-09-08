@@ -30,17 +30,18 @@ var useCreateImageBitmap =
   !browser.firefox &&
   !browser.safari &&
   !/iPhone|iPad|iPod/.test(navigator.userAgent);
+//  useCreateImageBitmap = false;
 // var useCreateImageBitmap =
 //   !!global.createImageBitmap &&
 //   !browser.firefox &&
 //   !/iPhone|iPad|iPod|Safari/.test(navigator.userAgent);
-  // var useCreateImageBitmap = false;
+// var useCreateImageBitmap = false;
 
-  // Options for createImageBitmap.
-  var createImageBitmapOpts = {
-    imageOrientation: 'flipY',
-    premultiplyAlpha: 'premultiply'
-  };
+// Options for createImageBitmap.
+var createImageBitmapOpts = {
+  imageOrientation: 'flipY',
+  premultiplyAlpha: 'premultiply'
+};
 
 /**
  * @class HtmlImageLoader
